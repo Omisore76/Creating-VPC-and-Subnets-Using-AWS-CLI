@@ -1,0 +1,25 @@
+aws ec2 create-vpc --cidr 11.0.0.0/16 
+aws ec2 create-tags --resources vpc-062ea3eb5cacb0242 --tags Key=Name,Value=Vpc_01
+
+aws ec2 create-subnet --vpc-id vpc-08b173748b92b8969 --cidr 11.0.0.0/2
+aws ec2 create-tags --resources subnet-058e7c626193db3fc --tags Key=Name,Value=Public_Subnet_01
+
+aws ec2 create-subnet --vpc-id vpc-08b173748b92b8969 --cidr 11.0.1.0/24		
+aws ec2 create-tags --resources subnet-05ca64a5272e09f8d --tags Key=Name,Value=Private_Subnet
+
+aws ec2 create-internet-gateway								
+aws ec2 create-tags --resources igw-0a6d0392dab477343 --tags Key=Name,Value=Internet_Gateway_01
+
+aws ec2 attach-internet-gateway --vpc-id vpc-08b173748b92b8969 --internet-gateway-id igw-0a6d0392dab477343
+
+aws ec2 create-route-table --vpc-id vpc-08b173748b92b8969	
+aws ec2 create-tags --resources rtb-0fe0e41315e5ee97f --tags Key=Name,Value=Route_Table_01
+
+aws ec2 create-route --route-table-id rtb-0fe0e41315e5ee97f --destination-cidr-block 0.0.0.0/0 --gateway-id igw-0a6d0392dab477343
+
+aws ec2 associate-route-table --subnet-id subnet-058e7c626193db3fc --route-table-id rtb-0fe0e41315e5ee97f
+
+aws ec2 modify-subnet-attribute --subnet-id subnet-058e7c626193db3fc --map-public-ip-on-launch
+
+
+
